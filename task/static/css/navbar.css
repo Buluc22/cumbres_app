@@ -1,0 +1,21 @@
+/* Estilos para el navbar */
+.navbar {
+    background-color: #647888 !important; /* Color de fondo */
+}
+
+.navbar .navbar-brand,
+.navbar .nav-link {
+    color: white !important; /* Color del texto */
+}
+
+.navbar .nav-link:hover {
+    color: #d1d1d1 !important; /* Color al pasar el cursor */
+}
+
+.navbar-toggler {
+    border-color: white !important; /* Color del botón del menú hamburguesa */
+}
+
+.navbar-toggler-icon {
+    filter: invert(1); /* Hace que el icono del botón sea blanco */
+}

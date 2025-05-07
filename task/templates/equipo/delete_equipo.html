@@ -1,0 +1,37 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+
+    <div class="container mt-5 d-flex justify-content-center">
+
+        <div class="card shadow p-4 shadow-lg text-center" style="width: 100%; max-width: 500px;">
+            <h5 class="text-danger mb-3">Eliminar Equipo</h5>
+            <p>¿Estás seguro de que deseas eliminar el equipo <strong>{{ equipo.NumSerie }}</strong>?</p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'equipos' %}" type="button" class="btn btn-outline-success">Cancelar</a>
+                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
+    
+    <!--<div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4 text-center" style="width: 30rem;">
+            <h3 class="text-danger">Eliminar Equipo</h3>
+            <p>¿Estás seguro de que deseas eliminar el equipo <strong>{{ equipo.NumSerie }}</strong>?</p>
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger w-100 mb-2">Eliminar</button>
+                <a href="{% url 'equipos' %}" class="btn btn-secondary w-100">Cancelar</a>
+            </form>
+        </div>
+    </div>-->
+    
+{% endblock %}

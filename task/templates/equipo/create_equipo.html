@@ -1,0 +1,55 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+
+    <div class="container mt-5 d-flex justify-content-center">
+
+        <div class="card shadow p-4" style="width: 100%; max-width: 500px;">
+            <h5 class="card-title text-center mb-4">Agregar Nuevo Equipo</h5>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="NumSerie" class="form-label">Número de Serie</label>
+                    <input type="text" class="form-control" id="NumSerie" name="NumSerie" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_economico" class="form-label">ID Económico</label>
+                    <input type="text" class="form-control" id="id_economico" name="id_economico">
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'equipos' %}" type="button" class="btn btn-outline-danger">Cancelar</a>
+                    <button type="submit" class="btn btn-outline-success">Guardar</button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+    
+    <!--<div class="container d-flex justify-content-center align-items-center vh-100">
+        <div class="card shadow-lg p-4" style="width: 30rem;">
+            <h3 class="text-center">Agregar Nuevo Equipo</h3>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="NumSerie" class="form-label">Número de Serie</label>
+                    <input type="text" class="form-control" id="NumSerie" name="NumSerie" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="id_economico" class="form-label">ID Económico</label>
+                    <input type="text" class="form-control" id="id_economico" name="id_economico">
+                </div>
+                
+                <button type="submit" class="btn btn-primary w-100">Guardar</button>
+            </form>
+
+        </div>
+    </div>-->
+    
+{% endblock %}

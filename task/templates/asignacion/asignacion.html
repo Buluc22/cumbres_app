@@ -1,0 +1,81 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbres - Villahermosa</title>
+</head>
+<body>
+    
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <form method="get" class="d-flex" style="width: 60%;">
+            <input type="text" name="m" class="form-control me-2" placeholder="Buscar por nombre" value="{{ query|default:'' }}">
+            <button type="submit" class="btn btn-outline-primary">Buscar</button>
+        </form>
+        <a href="{% url 'crear_asignacion' %}" class="btn btn-primary">Agregar Asignación</a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Listado de Asignaciones</h4>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle text-center">
+                    <thead class="table-primary">
+                        <tr>
+                            <th>Equipo</th>
+                            <th>Asignado a</th>
+                            <th>Tipo</th>
+                            <th>Caja</th>
+                            <th>Case</th>
+                            <th>Cargador</th>
+                            <th>Acuerdo</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for asignacion in asignaciones %}
+                        <tr>
+                            <td>{{ asignacion.equipo.NumSerie }}</td>
+                            <td>
+                                {% if asignacion.alumno %}
+                                {{ asignacion.alumno.nombre }}
+                                {% else %}
+                                {{ asignacion.personal.nombre }}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if asignacion.alumno %}
+                                Alumno
+                                {% else %}
+                                Personal
+                                {% endif %}
+                            </td>
+                            <td>{% if asignacion.caja %}✔{% else %}✖{% endif %}</td>
+                            <td>{% if asignacion.case %}✔{% else %}✖{% endif %}</td>
+                            <td>{% if asignacion.cargador %}✔{% else %}✖{% endif %}</td>
+                            <td>{% if asignacion.acuerdo_firmado %}✔{% else %}✖{% endif %}</td>
+                            <td>{{ asignacion.fecha_asignacion|date:"d/m/Y H:i" }}</td>
+                            <td>
+                                <a href="{% url 'editar_asignacion' asignacion.id %}" class="btn btn-sm btn-warning">Editar</a>
+                                <a href="{% url 'eliminar_asignacion' asignacion.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                <!--<a href="" class="btn btn-sm btn-info">Detalle</a>-->
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="9">No hay asignaciones registradas.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    
+</body>
+</html>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbres - Villahermosa</title>
+</head>
+<body>
+
+    <div class="container mt-5 d-flex justify-content-center">
+      <div class="card shadow p-4" style="width: 35rem;">
+        <h4 class="text-center mb-4">Editar Asignación</h4>
+        <form method="POST">
+          {% csrf_token %}
+
+          {% if errors %}
+          <div class="alert alert-danger">
+            <ul class="mb-0">
+              {% for field_errors in errors.values %}
+                {% for error in field_errors %}
+                  <li>{{ error }}</li>
+                {% endfor %}
+              {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
+
+    
+          <div class="mb-3">
+            <label>Equipo</label>
+            <select class="form-control" name="equipo" required>
+              {% for equipo in equipos %}
+                <!--<option value="{{ equipo.id }}" {% if equipo.id == asignacion.equipo.id %}selected{% endif %}>-->
+                  <option value="{{ equipo.id_equipo }}" {% if equipo.id_equipo == asignacion.equipo.id_equipo %}selected{% endif %}>
+                  {{ equipo.NumSerie }}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+    
+          <div class="mb-3">
+            <label>Alumno</label>
+            <select name="alumno" class="form-select">
+              <option value="">---</option>
+              {% for alumno in alumnos %}
+                <!--<option value="{{ alumno.id }}" {% if asignacion.alumno and alumno.id == asignacion.alumno.id %}selected{% endif %}>{{ alumno.nombre }}</option>-->
+                <option value="{{ alumno.id_alumno }}" {% if asignacion.alumno and alumno.id_alumno == asignacion.alumno.id_alumno %}selected{% endif %}>
+                  {{ alumno.nombre }}
+              {% endfor %}
+            </select>
+          </div>
+    
+          <div class="mb-3">
+            <label>Personal</label>
+            <select name="personal" class="form-select">
+              <option value="">---</option>
+              {% for persona in personal %}
+                <!--<option value="{{ persona.id }}" {% if asignacion.personal and persona.id == asignacion.personal.id %}selected{% endif %}>{{ persona.nombre }}</option>-->
+                <option value="{{ persona.id_personal }}" {% if asignacion.personal and persona.id_personal == asignacion.personal.id_personal %}selected{% endif %}>
+                  {{ persona.nombre }}
+              {% endfor %}
+            </select>
+          </div>
+    
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="caja" {% if asignacion.caja %}checked{% endif %}>
+            <label class="form-check-label">Caja</label>
+          </div>
+    
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="case" {% if asignacion.case %}checked{% endif %}>
+            <label class="form-check-label">Case</label>
+          </div>
+    
+          <div class="form-check mb-2">
+            <input type="checkbox" class="form-check-input" name="cargador" {% if asignacion.cargador %}checked{% endif %}>
+            <label class="form-check-label">Cargador</label>
+          </div>
+    
+          <div class="form-check mb-4">
+            <input type="checkbox" class="form-check-input" name="acuerdo_firmado" {% if asignacion.acuerdo_firmado %}checked{% endif %}>
+            <label class="form-check-label">Acuerdo firmado</label>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <a href="{% url 'asignacion' %}" type="button" class="btn btn-outline-danger">Cancelar</a>
+            <button type="submit" class="btn btn-outline-success">Guardar</button>
+        </div>
+    
+          <!--<button type="submit" class="btn btn-primary w-100">Actualizar</button>-->
+        </form>
+      </div>
+    </div>
+
+    
+</body>
+</html>
+{% endblock %}

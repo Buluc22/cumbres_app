@@ -1,0 +1,48 @@
+body {
+    background-image: url(/static/img/fondo.png);
+    background-size: cover; /* Hace que la imagen cubra toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    height: 100vh; /* Ocupa el 100% de la altura de la ventana */
+    width: 100vw; /* Ocupa el 100% del ancho de la ventana */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0; /* Evita espacios extras */
+    padding: 0;
+    overflow: hidden; /* Evita desplazamiento innecesario */
+}
+.login-container {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 400px;
+}
+
+.login-container img {
+    margin-bottom: 50px;
+}
+
+.form-control {
+    text-align: center;
+    border-radius: 30px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 15px;
+    border: 2px solid #647888;
+}
+
+.btn-primary {
+    background-color: #647888;
+    border: none;
+    border-radius: 30px;
+    padding: 10px 20px;
+    width: 100%;
+    margin-top: 30px;
+}
+.btn-primary:hover {
+    background-color: #647888;
+}

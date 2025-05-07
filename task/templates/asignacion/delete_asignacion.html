@@ -1,0 +1,36 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cumbres - Villahermosa</title>
+</head>
+<body>
+    
+<div class="container mt-5 d-flex justify-content-center">
+  <div class="card shadow p-4 text-center" style="width: 35rem;">
+    <h4 class="mb-4 text-danger">¿Estás seguro de eliminar esta asignación?</h4>
+    <p><strong>Equipo:</strong> {{ asignacion.equipo.NumSerie }}</p>
+    <p><strong>Asignado a:</strong>
+        {% if asignacion.alumno %}
+        {{ asignacion.alumno.nombre }}
+        {% else %}
+        {{ asignacion.personal.nombre }}
+        {% endif %}
+    </p>
+    <form method="POST">
+      {% csrf_token %}
+      <div class="d-flex justify-content-between mt-4">
+        <a href="{% url 'asignacion' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
+{% endblock %}

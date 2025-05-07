@@ -1,0 +1,37 @@
+{% extends 'base_navbar.html' %}
+
+{% block content %}
+
+    <div class="container mt-5 d-flex justify-content-center">
+
+        <div class="card shadow p-4 shadow-lg text-center" style="width: 100%; max-width: 500px;">
+            <h5 class="text-danger mb-3">Eliminar Personal</h5>
+            <p>¿Estás seguro de que deseas eliminar a <strong>{{ personal.nombre }}</strong>?</p>
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="d-flex justify-content-between">
+                    <a href="{% url 'personal' %}" type="button" class="btn btn-outline-success">Cancelar</a>
+                    <button type="submit" class="btn btn-outline-danger">Eliminar</button>
+                </div>
+
+            </form>
+
+        </div>
+        
+    </div>
+
+    
+    <!--<div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <div class="card shadow p-4 text-center" style="width: 30rem;">
+            <h4 class="mb-4 text-danger">Eliminar Personal</h4>
+            <p>¿Estás seguro de que deseas eliminar a <strong>{{ personal.nombre }}</strong>?</p>
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'personal' %}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>-->
+    
+{% endblock %}
