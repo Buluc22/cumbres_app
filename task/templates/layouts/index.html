@@ -8,9 +8,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cumbres - Villahermosa</title>
 </head>
-<body>
-    <h1>Hola</h1>
-    
+
+<body class="bg-light">
+    <div class="container mt-5">
+        <h2 class="text-center mb-4">Resumen General</h2>
+
+        <!-- Tabla arriba -->
+        <div class="card shadow-sm mx-auto" style="max-width: 80%;">
+            <div class="card-body">
+                <h5 class="text-center">Totales</h5>
+                <table class="table table-bordered table-striped text-center">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Total Personal</th>
+                            <th>Total Alumnos</th>
+                            <th>Total Equipos</th>
+                            <th>Total Equipos Asignados</th>
+                            <th>Total Equipos No Asignados</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{{ total_personal }}</td>
+                            <td>{{ total_alumnos }}</td>
+                            <td>{{ total_equipos }}</td>
+                            <td>{{ total_asignados }}</td>
+                            <td>{{ total_no_asignados }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Gráfica debajo -->
+        <div class="card mt-4 shadow-sm mx-auto" style="max-width: 900px;">
+            <div class="card-body text-center">
+                <h5>Distribución de Equipos</h5>
+                <div style="max-width: 600px; margin: auto;">
+                    <canvas id="miGrafica"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script de Chart.js -->
+    <script>
+    var datosTotales = JSON.parse('{{ datos_json|escapejs }}');
+
+    var ctx = document.getElementById('miGrafica').getContext('2d');
+    var miGrafica = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Personal', 'Alumnos', 'Equipos', 'Asignados', 'No Asignados'],
+            datasets: [{
+                data: [datosTotales.personal, datosTotales.alumnos, datosTotales.equipos, datosTotales.asignados, datosTotales.noAsignados],
+                backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545', '#6c757d']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
 </body>
+
 </html>
 {% endblock %}

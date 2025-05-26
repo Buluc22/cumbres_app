@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Responsiva Alumno</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; font-size: 12pt; }
+        .container { width: 100%; text-align: justify; }
+        .campo { font-weight: bold; text-decoration: underline; }
+
+        .firma-container {
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .firma {
+            width: 45%;
+            text-align: center;
+            display: inline-block;
+            vertical-align: top;
+        }
+
+        .firma-full {
+            width: 100%;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        h2, h3 { text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>ACUERDO DE PRÉSTAMO</h2>
+
+        <p>
+            A través del presente acuerdo acepto del Instituto Cumbres Villahermosa el préstamo de la Chromebook con ID:
+            <span class="campo">{{ id_equipo }}</span>, Número de serie:
+            <span class="campo">{{ NumSerie }}</span>, a partir del
+            <span class="campo">{{ fecha_asignacion }}</span>, para que mi hijo(a):
+            <span class="campo">{{ nombre }}</span>, del grado
+            <span class="campo">{{ grado }}</span> grupo
+            <span class="campo">{{ grupo }}</span>, de la sección
+            <span class="campo">{{ seccion }}</span>, pueda utilizarla para sus labores académicas.
+            Me comprometo a cumplir el reglamento correspondiente, el cual he leído y estoy enterado de su contenido y alcance.
+        </p>
+
+        <p>
+            Declaro que el dispositivo y el cargador se encuentran en buenas condiciones al momento de recibirlos. Acepto la supervisión y devolución del equipo proporcionado por el
+            Instituto Cumbres Villahermosa, cuando me sea solicitado.
+        </p>
+
+        <p>
+            Acepto los términos y condiciones del seguro que el Colegio tiene contratado para la protección del equipo.
+        </p>
+
+        <div class="firma-full">
+            <p>_________________________</p>
+            <p>Nombre y firma del padre o tutor</p>
+        </div>
+
+        <table>
+            <tr>
+                <td>______________________________________________________________________</td>
+            </tr>
+        </table>
+
+        <h3>RECEPCIÓN DE CHROMEBOOK</h3>
+
+        <p>
+            Se recibe Chromebook con ID: <span class="campo">{{ id_equipo }}</span>, Número de serie:
+            <span class="campo">{{ NumSerie }}</span>, con fecha (DD/MM/AA):
+            <span class="campo">{{ fecha_asignacion }}</span>. Incluye:
+            Cargador: <span class="campo">{{ cargador }}</span>,
+            Caja: <span class="campo">{{ caja }}</span>,
+            Case: <span class="campo">{{ case }}</span>.
+        </p>
+
+        <p>Presenta las siguientes características:</p>
+        <table>
+            <tr>
+                <td>______________________________________________________________________</td>
+            </tr>
+            <tr>
+                <td>______________________________________________________________________</td>
+            </tr>
+        </table>
+
+        <table width="100%" style="margin-top: 40px;">
+        <tr>
+            <td style="width: 50%; text-align: center;">
+            <p>_________________________</p>
+            <p>Entrega</p>
+            <p>Nombre y firma</p>
+            </td>
+            <td style="width: 50%; text-align: center;">
+            <p>_________________________</p>
+            <p>Recibe</p>
+            <p>Nombre y firma</p>
+            </td>
+        </tr>
+        </table>
+
+    </div>
+
+</body>
+</html>

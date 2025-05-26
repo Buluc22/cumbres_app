@@ -9,7 +9,11 @@ from .models import Equipo
 from .models import Alumno
 from .models import Personal
 from .models import Asignacion
-#from django.http import HttpResponse
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from io import BytesIO
+import json
 
 
 # Create your views here.
@@ -243,6 +247,7 @@ def asignacion_view(request):
     return render(request, 'asignacion/asignacion.html', {'asignaciones': asignaciones, 'query': query})
 
 # Crear Asignacion 
+@login_required
 def create_asignacion(request):
     equipos = Equipo.objects.all()
     alumnos = Alumno.objects.all()
@@ -312,7 +317,8 @@ def create_asignacion(request):
     }
     return render(request, 'asignacion/create_asignacion.html', context)'''
 
-# Actualizar Asignacion 
+# Actualizar Asignacion
+@login_required
 def update_asignacion(request, asignacion_id):
     asignacion = get_object_or_404(Asignacion, id=asignacion_id)
     equipos = Equipo.objects.all()
@@ -400,7 +406,8 @@ def update_asignacion(request, asignacion_id):
         'personal': personal
     })'''
 
-# Eliminar Asignacion 
+# Eliminar Asignacion
+@login_required 
 def delete_asignacion(request, asignacion_id):
     asignacion = get_object_or_404(Asignacion, id=asignacion_id)
 
@@ -409,3 +416,148 @@ def delete_asignacion(request, asignacion_id):
         return redirect('asignacion')
 
     return render(request, 'asignacion/delete_asignacion.html', {'asignacion': asignacion})
+
+#Generar Responsiva PDF Personal
+@login_required
+def generar_responsiva_personal(request, asignacion_id):
+    asignacion = Asignacion.objects.get(id=asignacion_id)
+
+    template_path = 'asignacion/responsiva_personal.html'
+    context = {
+        'id_equipo': asignacion.equipo.id_equipo,
+        'NumSerie': asignacion.equipo.NumSerie,
+        'fecha_asignacion': asignacion.fecha_asignacion.strftime('%d/%m/%Y'),
+        'cargador': 'Sí' if asignacion.cargador else 'No',
+        'caja': 'Sí' if asignacion.caja else 'No',
+        'case': 'Sí' if asignacion.case else 'No',
+        'nombre_usuario': asignacion.personal.id_personal,  # Asegúrate de tener este campo
+    }
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename="responsiva_personal.pdf"'
+    
+    template = get_template(template_path)
+    html = template.render(context)
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF: %s' % pisa_status.err)
+    return response
+
+#Generar Responsiva PDF Alumno
+@login_required
+def generar_responsiva_alumno(request, asignacion_id):
+    asignacion = Asignacion.objects.get(id=asignacion_id)
+
+    template_path = 'asignacion/responsiva_alumno.html'
+    context = {
+        'id_equipo': asignacion.equipo.id_equipo,
+        'NumSerie': asignacion.equipo.NumSerie,
+        'fecha_asignacion': asignacion.fecha_asignacion.strftime("%d/%m/%Y"),
+        'nombre': asignacion.alumno.nombre,
+        'grado': asignacion.alumno.grado,
+        'grupo': asignacion.alumno.grupo,
+        'seccion': asignacion.alumno.seccion,
+        'cargador': 'Sí' if asignacion.cargador else 'No',
+        'caja': 'Sí' if asignacion.caja else 'No',
+        'case': 'Sí' if asignacion.case else 'No',
+    }
+
+    template = get_template(template_path)
+    html = template.render(context)
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'filename=responsiva_alumno_{asignacion.id}.pdf'
+
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    if pisa_status.err:
+        return HttpResponse('Error al generar el PDF: %s' % pisa_status.err)
+    return response
+
+#Generar Responsivas Masivas de Personal
+@login_required
+def responsivas_personal_pdf(request):
+    asignaciones = Asignacion.objects.filter(personal__isnull=False)
+
+    template = get_template('asignacion/responsiva_personal.html')
+    html_content = ""
+
+    for asignacion in asignaciones:
+        html = template.render({
+            'id_equipo': asignacion.equipo.id_equipo,
+            'NumSerie': asignacion.equipo.NumSerie,
+            'fecha_asignacion': asignacion.fecha_asignacion.strftime('%d/%m/%Y'),
+            'cargador': "Sí" if asignacion.cargador else "No",
+            'caja': "Sí" if asignacion.caja else "No",
+            'case': "Sí" if asignacion.case else "No",
+        })
+        html_content += html + '<p style="page-break-after: always;"></p>'
+
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(src=html_content, dest=result)
+
+    if pisa_status.err:
+        return HttpResponse("Error generando PDF", status=500)
+
+    return HttpResponse(result.getvalue(), content_type='application/pdf')
+
+#Generar Responsivas Masivas de Alumnos
+@login_required
+def responsivas_alumnos_pdf(request):
+    asignaciones = Asignacion.objects.filter(alumno__isnull=False)
+
+    template = get_template('asignacion/responsiva_alumno.html')
+    html_content = ""
+
+    for asignacion in asignaciones:
+        html = template.render({
+            'id_equipo': asignacion.equipo.id_equipo,
+            'NumSerie': asignacion.equipo.NumSerie,
+            'fecha_asignacion': asignacion.fecha_asignacion.strftime('%d/%m/%Y'),
+            'nombre': asignacion.alumno.nombre,
+            'grado': asignacion.alumno.grado,
+            'grupo': asignacion.alumno.grupo,
+            'seccion': asignacion.alumno.seccion,
+            'cargador': "Sí" if asignacion.cargador else "No",
+            'caja': "Sí" if asignacion.caja else "No",
+            'case': "Sí" if asignacion.case else "No",
+        })
+        html_content += html + '<p style="page-break-after: always;"></p>'
+
+    result = BytesIO()
+    pisa_status = pisa.CreatePDF(src=html_content, dest=result)
+
+    if pisa_status.err:
+        return HttpResponse("Error generando PDF", status=500)
+
+    return HttpResponse(result.getvalue(), content_type='application/pdf')
+
+#Tabla del INDEX
+@login_required
+def index(request):
+    total_alumnos = Alumno.objects.count()
+    total_personal = Personal.objects.count()
+    total_equipos = Equipo.objects.count()
+    total_asignados = Asignacion.objects.filter(equipo__isnull=False).count()
+    total_no_asignados = total_equipos - total_asignados
+
+    # Convertir los datos a JSON seguro para JavaScript
+    datos_json = json.dumps({
+        "personal": total_personal,
+        "alumnos": total_alumnos,
+        "equipos": total_equipos,
+        "asignados": total_asignados,
+        "noAsignados": total_no_asignados
+    })
+
+    context = {
+        "total_alumnos": total_alumnos,
+        "total_personal": total_personal,
+        "total_equipos": total_equipos,
+        "total_asignados": total_asignados,
+        "total_no_asignados": total_no_asignados,
+        "datos_json": datos_json
+    }
+
+    return render(request, "layouts/index.html", context)
+

@@ -32,4 +32,13 @@ urlpatterns = [
     path('asignacion/editar/<int:asignacion_id>/', views.update_asignacion, name='editar_asignacion'),
     path('asignacion/eliminar/<int:asignacion_id>/', views.delete_asignacion, name='eliminar_asignacion'),
 
+    #Generar Responsivas individuales
+    path('asignacion/<int:asignacion_id>/responsiva/personal/', views.generar_responsiva_personal, name='responsiva_personal'),
+    path('asignacion/<int:asignacion_id>/responsiva/alumno/', views.generar_responsiva_alumno, name='responsiva_alumno'),
+
+    #Generar responsivas masivas
+    path('asignacion/responsivas/personal/', views.responsivas_personal_pdf, name='responsivas_personal_pdf'),
+    path('asignacion/responsivas/alumnos/', views.responsivas_alumnos_pdf, name='responsivas_alumnos_pdf'),
+
+
 ]

@@ -16,7 +16,17 @@
             <input type="text" name="m" class="form-control me-2" placeholder="Buscar por nombre" value="{{ query|default:'' }}">
             <button type="submit" class="btn btn-outline-primary">Buscar</button>
         </form>
+
+        <!--<button type="submit" class="btn btn-link">Responsivas Alumnos</button>-->
+
+        <a href="{% url 'responsivas_alumnos_pdf' %}" target="_blank" class="btn btn-link">Responsivas Alumnos</a>
+
+
+        <a href="{% url 'responsivas_personal_pdf' %}" target="_blank" class="btn btn-link">Responsivas Personal</a>
+
+        <!--<button type="submit" class="btn btn-link">Responsivas Personal</button>-->
         <a href="{% url 'crear_asignacion' %}" class="btn btn-primary">Agregar Asignación</a>
+        
     </div>
 
     <div class="card shadow">
@@ -26,6 +36,7 @@
                 <table class="table table-bordered table-hover align-middle text-center">
                     <thead class="table-primary">
                         <tr>
+                            <th>ID</th>
                             <th>Equipo</th>
                             <th>Asignado a</th>
                             <th>Tipo</th>
@@ -40,6 +51,7 @@
                     <tbody>
                         {% for asignacion in asignaciones %}
                         <tr>
+                            <td>{{ asignacion.equipo.id_equipo}}</td>
                             <td>{{ asignacion.equipo.NumSerie }}</td>
                             <td>
                                 {% if asignacion.alumno %}
@@ -59,11 +71,18 @@
                             <td>{% if asignacion.case %}✔{% else %}✖{% endif %}</td>
                             <td>{% if asignacion.cargador %}✔{% else %}✖{% endif %}</td>
                             <td>{% if asignacion.acuerdo_firmado %}✔{% else %}✖{% endif %}</td>
-                            <td>{{ asignacion.fecha_asignacion|date:"d/m/Y H:i" }}</td>
+                            <td>{{ asignacion.fecha_asignacion|date:"d/m/Y" }}</td>
                             <td>
                                 <a href="{% url 'editar_asignacion' asignacion.id %}" class="btn btn-sm btn-warning">Editar</a>
                                 <a href="{% url 'eliminar_asignacion' asignacion.id %}" class="btn btn-sm btn-danger">Eliminar</a>
+                                <!--<a href="{% url 'responsiva_personal' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>-->
                                 <!--<a href="" class="btn btn-sm btn-info">Detalle</a>-->
+                                {% if asignacion.personal %}
+                                    <a href="{% url 'responsiva_personal' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
+                                {% elif asignacion.alumno %}
+                                    <a href="{% url 'responsiva_alumno' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
+                                {% endif %}
+
                             </td>
                         </tr>
                         {% empty %}
