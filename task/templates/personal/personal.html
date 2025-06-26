@@ -19,7 +19,9 @@
                 <input type="text" name="m" class="form-control me-2" placeholder="Buscar por nombre de personal" value="{{ query|default_if_none:'' }}">
                 <button type="submit" class="btn btn-outline-primary">Buscar</button>
             </form>
+            {% if perms.task.add_personal %}
             <a href="{% url 'crear_personal' %}" class="btn btn-primary">Agregar Personal</a>
+            {% endif %}
         </div>
 
         <!--Seleccionar archivo excel
@@ -47,8 +49,13 @@
                     <td>{{ personal.puesto }}</td>
                     <td>{{ personal.seccion }}</td>
                     <td>
+                        {% if perms.task.change_personal %}
                         <a href="{% url 'editar_personal' personal.id_personal %}" class="btn btn-warning btn-sm">Editar</a>
+                        {% endif %}
+
+                        {% if perms.task.delete_personal %}
                         <a href="{% url 'eliminar_personal' personal.id_personal %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}

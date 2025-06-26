@@ -18,14 +18,17 @@
         </form>
 
         <!--<button type="submit" class="btn btn-link">Responsivas Alumnos</button>-->
-
+        {% if user.is_superuser %}
         <a href="{% url 'responsivas_alumnos_pdf' %}" target="_blank" class="btn btn-link">Responsivas Alumnos</a>
 
 
         <a href="{% url 'responsivas_personal_pdf' %}" target="_blank" class="btn btn-link">Responsivas Personal</a>
+        {% endif %}
 
         <!--<button type="submit" class="btn btn-link">Responsivas Personal</button>-->
+        {% if perms.task.add_asignacion %}
         <a href="{% url 'crear_asignacion' %}" class="btn btn-primary">Agregar Asignación</a>
+        {% endif %}
         
     </div>
 
@@ -73,14 +76,20 @@
                             <td>{% if asignacion.acuerdo_firmado %}✔{% else %}✖{% endif %}</td>
                             <td>{{ asignacion.fecha_asignacion|date:"d/m/Y" }}</td>
                             <td>
+                                {% if perms.task.change_asignacion %}
                                 <a href="{% url 'editar_asignacion' asignacion.id %}" class="btn btn-sm btn-warning">Editar</a>
+                                {% endif %}
+
+                                {% if perms.task.delete_asignacion %}
                                 <a href="{% url 'eliminar_asignacion' asignacion.id %}" class="btn btn-sm btn-danger">Eliminar</a>
-                                <!--<a href="{% url 'responsiva_personal' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>-->
-                                <!--<a href="" class="btn btn-sm btn-info">Detalle</a>-->
-                                {% if asignacion.personal %}
-                                    <a href="{% url 'responsiva_personal' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
+                                {% endif %}
+                                
+                                {% if user.is_superuser %}
+                                    {% if asignacion.personal %}
+                                        <a href="{% url 'responsiva_personal' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
                                 {% elif asignacion.alumno %}
-                                    <a href="{% url 'responsiva_alumno' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
+                                        <a href="{% url 'responsiva_alumno' asignacion.id %}" target="_blank" class="btn btn-outline-info">Responsiva PDF</a>
+                                    {% endif %}
                                 {% endif %}
 
                             </td>

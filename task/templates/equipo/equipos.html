@@ -19,7 +19,9 @@
                 <input type="text" name="q" class="form-control me-2" placeholder="Buscar por número de serie" value="{{ query|default_if_none:'' }}">
                 <button type="submit" class="btn btn-outline-primary">Buscar</button>
             </form>
+            {% if perms.task.add_equipo %}
             <a href="{% url 'crear_equipo' %}" class="btn btn-primary">Agregar Equipo</a>
+            {% endif %}
         </div>
 
         <!--Seleccionar archivo excel
@@ -45,8 +47,13 @@
                     <td>{{ equipo.id_economico|default:"-" }}</td>
                     <td>{{ equipo.NumSerie }}</td>
                     <td>
+                        {% if perms.task.change_equipo %}
                         <a href="{% url 'editar_equipo' equipo.id_equipo %}" class="btn btn-warning btn-sm">Editar</a>
+                        {% endif %}
+
+                        {% if perms.task.delete_equipo %}
                         <a href="{% url 'eliminar_equipo' equipo.id_equipo %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}

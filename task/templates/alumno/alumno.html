@@ -19,7 +19,9 @@
                 <input type="text" name="a" class="form-control me-2" placeholder="Buscar por nombre de alumno" value="{{ query|default_if_none:'' }}">
                 <button type="submit" class="btn btn-outline-primary">Buscar</button>
             </form>
+            {% if perms.task.add_alumno %}
             <a href="{% url 'crear_alumno' %}" class="btn btn-primary">Agregar Alumno</a>
+            {% endif %}
         </div>
 
         <!--Seleccionar archivo excel
@@ -49,8 +51,15 @@
                     <td>{{ alumno.grupo }}</td>
                     <td>{{ alumno.seccion }}</td>
                     <td>
+                        {# Botón para editar #}
+                        {% if perms.task.change_alumno %}
                         <a href="{% url 'editar_alumno' alumno.id_alumno %}" class="btn btn-warning btn-sm">Editar</a>
+                        {% endif %}
+
+                        {# Botón para eliminar #}
+                        {% if perms.task.delete_alumno %}
                         <a href="{% url 'eliminar_alumno' alumno.id_alumno %}" class="btn btn-danger btn-sm">Eliminar</a>
+                        {% endif %}
                     </td>
                 </tr>
                 {% empty %}
